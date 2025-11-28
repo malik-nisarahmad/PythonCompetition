@@ -1093,24 +1093,59 @@ class FileSystemManager:
 
 
 # ============================================================================
-# MAIN ORCHESTRATOR - MODERN SLEEK UI
+# MAIN ORCHESTRATOR - CYBERPUNK EDITION 🌆
 # ============================================================================
 
 import time
 
-# ANSI color codes for terminal
+# ANSI color codes + 256 color support for gradients
 class Colors:
-    HEADER = '\033[95m'
-    BLUE = '\033[94m'
-    CYAN = '\033[96m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
+    # Basic colors
+    RESET = '\033[0m'
     BOLD = '\033[1m'
     DIM = '\033[2m'
-    RESET = '\033[0m'
+    ITALIC = '\033[3m'
+    UNDERLINE = '\033[4m'
+    BLINK = '\033[5m'
+    
+    # Cyberpunk gradient colors (256 color mode)
+    NEON_PINK = '\033[38;5;198m'
+    NEON_CYAN = '\033[38;5;51m'
+    NEON_PURPLE = '\033[38;5;129m'
+    NEON_BLUE = '\033[38;5;39m'
+    NEON_GREEN = '\033[38;5;46m'
+    NEON_YELLOW = '\033[38;5;226m'
+    NEON_ORANGE = '\033[38;5;208m'
+    NEON_RED = '\033[38;5;196m'
+    
+    # Background colors
+    BG_DARK = '\033[48;5;234m'
+    BG_DARKER = '\033[48;5;232m'
+    
+    # Standard colors
     WHITE = '\033[97m'
-    MAGENTA = '\033[35m'
+    GRAY = '\033[90m'
+    
+    # Gradient helpers
+    @staticmethod
+    def gradient_text(text, colors):
+        """Apply gradient colors to text."""
+        result = ""
+        color_count = len(colors)
+        for i, char in enumerate(text):
+            color = colors[i % color_count]
+            result += f"{color}{char}"
+        return result + Colors.RESET
+    
+    @staticmethod
+    def rgb(r, g, b):
+        """Generate 24-bit color code."""
+        return f'\033[38;2;{r};{g};{b}m'
+    
+    @staticmethod
+    def bg_rgb(r, g, b):
+        """Generate 24-bit background color code."""
+        return f'\033[48;2;{r};{g};{b}m'
 
 
 def clear_screen():
@@ -1118,160 +1153,235 @@ def clear_screen():
     os.system('clear' if os.name != 'nt' else 'cls')
 
 
-def print_slow(text, delay=0.02):
-    """Print text with typewriter effect."""
-    for char in text:
-        print(char, end='', flush=True)
-        time.sleep(delay)
-    print()
-
-
-def print_banner():
-    """Print modern animated banner."""
+def print_cyberpunk_banner():
+    """Print epic cyberpunk animated banner with gradients."""
     clear_screen()
     
-    logo = f"""
-{Colors.CYAN}{Colors.BOLD}
-    ██████╗██╗  ██╗██████╗  ██████╗ ███╗   ███╗███████╗
-   ██╔════╝██║  ██║██╔══██╗██╔═══██╗████╗ ████║██╔════╝
-   ██║     ███████║██████╔╝██║   ██║██╔████╔██║█████╗  
-   ██║     ██╔══██║██╔══██╗██║   ██║██║╚██╔╝██║██╔══╝  
-   ╚██████╗██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗
-    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
-{Colors.YELLOW}   ███████╗ ██████╗ ██████╗  ██████╗ ███████╗        
-   ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝        
-   █████╗  ██║   ██║██████╔╝██║  ███╗█████╗          
-   ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝          
-   ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗        
-   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝        
-{Colors.RESET}"""
+    # Gradient colors for the logo
+    pink = Colors.NEON_PINK
+    cyan = Colors.NEON_CYAN
+    purple = Colors.NEON_PURPLE
     
-    print(logo)
-    print(f"{Colors.DIM}{'─' * 60}{Colors.RESET}")
-    print(f"{Colors.WHITE}   🚀 AI-Powered Chrome Extension Generator{Colors.RESET}")
-    print(f"{Colors.DIM}   Version {VERSION} │ FAST University Tech Society{Colors.RESET}")
-    print(f"{Colors.DIM}{'─' * 60}{Colors.RESET}\n")
+    # Epic ASCII art with color gradient
+    print(f"""
+{pink}   ╔══════════════════════════════════════════════════════════════╗
+   ║                                                              ║
+   ║{cyan}  ░█████╗░██╗░░██╗██████╗░░█████╗░███╗░░░███╗███████╗         {pink}║
+   ║{cyan}  ██╔══██╗██║░░██║██╔══██╗██╔══██╗████╗░████║██╔════╝         {pink}║
+   ║{cyan}  ██║░░╚═╝███████║██████╔╝██║░░██║██╔████╔██║█████╗░░         {pink}║
+   ║{cyan}  ██║░░██╗██╔══██║██╔══██╗██║░░██║██║╚██╔╝██║██╔══╝░░         {pink}║
+   ║{cyan}  ╚█████╔╝██║░░██║██║░░██║╚█████╔╝██║░╚═╝░██║███████╗         {pink}║
+   ║{cyan}  ░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚══════╝         {pink}║
+   ║                                                              ║
+   ║{purple}  ███████╗░█████╗░██████╗░░██████╗░███████╗                    {pink}║
+   ║{purple}  ██╔════╝██╔══██╗██╔══██╗██╔════╝░██╔════╝                    {pink}║
+   ║{purple}  █████╗░░██║░░██║██████╔╝██║░░██╗░█████╗░░                    {pink}║
+   ║{purple}  ██╔══╝░░██║░░██║██╔══██╗██║░░╚██╗██╔══╝░░                    {pink}║
+   ║{purple}  ██║░░░░░╚█████╔╝██║░░██║╚██████╔╝███████╗                    {pink}║
+   ║{purple}  ╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░╚═════╝░╚══════╝                    {pink}║
+   ║                                                              ║
+   ╠══════════════════════════════════════════════════════════════╣
+   ║  {Colors.NEON_YELLOW}⚡{pink} {Colors.WHITE}CHROME EXTENSION GENERATOR{Colors.RESET}                {pink}║
+   ║  {Colors.NEON_CYAN}🌐{pink} {Colors.GRAY}FAST University Tech Society{Colors.RESET}              {pink}║
+   ║  {Colors.NEON_GREEN}📦{pink} {Colors.GRAY}Version {VERSION} │ Pure Python │ No APIs{Colors.RESET}          {pink}║
+   ╚══════════════════════════════════════════════════════════════╝{Colors.RESET}
+""")
 
 
-def print_step(step_num, title, status="working"):
-    """Print a step with status indicator."""
-    icons = {
-        "working": f"{Colors.YELLOW}⟳{Colors.RESET}",
-        "done": f"{Colors.GREEN}✓{Colors.RESET}",
-        "error": f"{Colors.RED}✗{Colors.RESET}",
-        "info": f"{Colors.CYAN}ℹ{Colors.RESET}"
-    }
-    icon = icons.get(status, icons["working"])
-    print(f"\n{icon} {Colors.BOLD}STEP {step_num}{Colors.RESET} │ {Colors.WHITE}{title}{Colors.RESET}")
+def print_glowing_divider():
+    """Print a glowing cyberpunk divider."""
+    gradient = [Colors.NEON_CYAN, Colors.NEON_BLUE, Colors.NEON_PURPLE, Colors.NEON_PINK]
+    line = "═" * 64
+    print(f"\n   {Colors.gradient_text(line, gradient)}\n")
 
 
-def print_progress_bar(progress, total, width=40):
-    """Print an animated progress bar."""
-    filled = int(width * progress / total)
-    bar = f"{Colors.GREEN}{'█' * filled}{Colors.DIM}{'░' * (width - filled)}{Colors.RESET}"
-    percent = int(100 * progress / total)
-    print(f"\r   [{bar}] {percent}%", end='', flush=True)
+def print_step_cyberpunk(step_num, total_steps, title):
+    """Print cyberpunk styled step indicator."""
+    progress = "●" * step_num + "○" * (total_steps - step_num)
+    colors = [Colors.NEON_PINK, Colors.NEON_PURPLE, Colors.NEON_CYAN, Colors.NEON_BLUE]
+    
+    print(f"""
+   {Colors.NEON_PINK}┌─────────────────────────────────────────────────────────────┐{Colors.RESET}
+   {Colors.NEON_PINK}│{Colors.RESET}  {Colors.NEON_YELLOW}⚡{Colors.RESET} {Colors.BOLD}STEP {step_num}/{total_steps}{Colors.RESET}  {Colors.GRAY}│{Colors.RESET}  {colors[step_num-1]}{title}{Colors.RESET}
+   {Colors.NEON_PINK}│{Colors.RESET}  {Colors.NEON_CYAN}{progress}{Colors.RESET}
+   {Colors.NEON_PINK}└─────────────────────────────────────────────────────────────┘{Colors.RESET}""")
 
 
-def animate_processing(message, duration=0.5):
-    """Show processing animation."""
-    frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+def animate_cyber_loader(message, duration=0.8):
+    """Cyberpunk loading animation with neon effect."""
+    frames = [
+        "▰▱▱▱▱▱▱", "▰▰▱▱▱▱▱", "▰▰▰▱▱▱▱", "▰▰▰▰▱▱▱",
+        "▰▰▰▰▰▱▱", "▰▰▰▰▰▰▱", "▰▰▰▰▰▰▰", "▱▰▰▰▰▰▰",
+        "▱▱▰▰▰▰▰", "▱▱▱▰▰▰▰", "▱▱▱▱▰▰▰", "▱▱▱▱▱▰▰",
+        "▱▱▱▱▱▱▰", "▱▱▱▱▱▱▱"
+    ]
+    colors = [Colors.NEON_CYAN, Colors.NEON_BLUE, Colors.NEON_PURPLE, Colors.NEON_PINK]
+    
     end_time = time.time() + duration
     i = 0
     while time.time() < end_time:
-        print(f"\r   {Colors.CYAN}{frames[i % len(frames)]}{Colors.RESET} {message}", end='', flush=True)
-        time.sleep(0.08)
+        color = colors[i % len(colors)]
+        frame = frames[i % len(frames)]
+        print(f"\r   {color}{frame}{Colors.RESET} {Colors.GRAY}{message}{Colors.RESET}", end='', flush=True)
+        time.sleep(0.06)
         i += 1
-    print(f"\r   {Colors.GREEN}✓{Colors.RESET} {message}           ")
+    print(f"\r   {Colors.NEON_GREEN}▰▰▰▰▰▰▰{Colors.RESET} {Colors.WHITE}{message}{Colors.RESET} {Colors.NEON_GREEN}✓{Colors.RESET}           ")
 
 
-def print_analysis_card(analysis: Dict[str, Any]):
-    """Print analysis results in a modern card format."""
-    print(f"\n   {Colors.DIM}┌{'─' * 50}┐{Colors.RESET}")
-    print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}📊 ANALYSIS RESULTS{Colors.RESET}{'':>30}{Colors.DIM}│{Colors.RESET}")
-    print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
+def print_neon_progress_bar(progress, total, label=""):
+    """Print a neon-styled progress bar."""
+    width = 40
+    filled = int(width * progress / total)
+    empty = width - filled
     
-    # Validation status
-    status_icon = f"{Colors.GREEN}✓{Colors.RESET}" if analysis['valid'] else f"{Colors.RED}✗{Colors.RESET}"
-    print(f"   {Colors.DIM}│{Colors.RESET}  Status: {status_icon} {analysis['validation_message'][:35]:<35}{Colors.DIM}│{Colors.RESET}")
+    # Gradient effect on filled portion
+    bar_filled = ""
+    for i in range(filled):
+        if i < filled // 3:
+            bar_filled += f"{Colors.NEON_CYAN}█"
+        elif i < 2 * filled // 3:
+            bar_filled += f"{Colors.NEON_PURPLE}█"
+        else:
+            bar_filled += f"{Colors.NEON_PINK}█"
     
-    # Intent detection
+    bar_empty = f"{Colors.GRAY}{'░' * empty}{Colors.RESET}"
+    percent = int(100 * progress / total)
+    
+    print(f"\r   {Colors.NEON_PINK}[{Colors.RESET}{bar_filled}{bar_empty}{Colors.NEON_PINK}]{Colors.RESET} {Colors.NEON_YELLOW}{percent}%{Colors.RESET} {Colors.GRAY}{label}{Colors.RESET}", end='', flush=True)
+
+
+def print_analysis_cyberpunk(analysis: Dict[str, Any]):
+    """Print analysis in cyberpunk holographic card style."""
+    
+    print(f"""
+   {Colors.NEON_CYAN}╔══════════════════════════════════════════════════════════╗{Colors.RESET}
+   {Colors.NEON_CYAN}║{Colors.RESET}  {Colors.NEON_YELLOW}◈{Colors.RESET} {Colors.BOLD}{Colors.WHITE}NEURAL ANALYSIS COMPLETE{Colors.RESET}                             {Colors.NEON_CYAN}║{Colors.RESET}
+   {Colors.NEON_CYAN}╠══════════════════════════════════════════════════════════╣{Colors.RESET}""")
+    
+    # Status
+    status_icon = f"{Colors.NEON_GREEN}◉ VALID{Colors.RESET}" if analysis['valid'] else f"{Colors.NEON_RED}◉ INVALID{Colors.RESET}"
+    print(f"   {Colors.NEON_CYAN}║{Colors.RESET}  {Colors.GRAY}Status:{Colors.RESET} {status_icon}                                        {Colors.NEON_CYAN}║{Colors.RESET}")
+    
+    # Intent
     if analysis['intents']:
         top_intent = max(analysis['intents'].items(), key=lambda x: x[1])
-        print(f"   {Colors.DIM}│{Colors.RESET}  Intent: {Colors.CYAN}{top_intent[0]}{Colors.RESET} ({top_intent[1]:.0%} confidence){'':>13}{Colors.DIM}│{Colors.RESET}")
+        intent_bar = "█" * int(top_intent[1] * 10) + "░" * (10 - int(top_intent[1] * 10))
+        print(f"   {Colors.NEON_CYAN}║{Colors.RESET}  {Colors.GRAY}Intent:{Colors.RESET} {Colors.NEON_PURPLE}{top_intent[0]:<20}{Colors.RESET} {Colors.NEON_CYAN}{intent_bar}{Colors.RESET} {Colors.NEON_YELLOW}{top_intent[1]:.0%}{Colors.RESET}   {Colors.NEON_CYAN}║{Colors.RESET}")
     
-    print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
-    print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}🧩 COMPONENTS{Colors.RESET}{'':>36}{Colors.DIM}│{Colors.RESET}")
+    print(f"   {Colors.NEON_CYAN}╠══════════════════════════════════════════════════════════╣{Colors.RESET}")
+    print(f"   {Colors.NEON_CYAN}║{Colors.RESET}  {Colors.NEON_PINK}◈{Colors.RESET} {Colors.BOLD}DETECTED COMPONENTS{Colors.RESET}                                  {Colors.NEON_CYAN}║{Colors.RESET}")
     
-    # Components grid
-    comp_line = "   "
+    # Components with icons
+    comp_icons = {
+        "popup": "🎯", "content_script": "📜", "background": "⚙️",
+        "storage": "💾", "css": "🎨"
+    }
+    
     for comp, needed in analysis['components'].items():
-        icon = f"{Colors.GREEN}●{Colors.RESET}" if needed else f"{Colors.DIM}○{Colors.RESET}"
-        comp_line += f" {icon} {comp:<12}"
-    print(f"   {Colors.DIM}│{Colors.RESET}{comp_line[:48]:<48}{Colors.DIM}│{Colors.RESET}")
-    
-    # Permissions
-    if analysis['permissions']:
-        print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
-        print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}🔐 PERMISSIONS{Colors.RESET}{'':>35}{Colors.DIM}│{Colors.RESET}")
-        perms = ', '.join(sorted(analysis['permissions']))[:45]
-        print(f"   {Colors.DIM}│{Colors.RESET}  {perms:<48}{Colors.DIM}│{Colors.RESET}")
+        icon = comp_icons.get(comp, "•")
+        status = f"{Colors.NEON_GREEN}◉ ENABLED{Colors.RESET}" if needed else f"{Colors.GRAY}○ disabled{Colors.RESET}"
+        print(f"   {Colors.NEON_CYAN}║{Colors.RESET}    {icon} {comp:<15} {status}                      {Colors.NEON_CYAN}║{Colors.RESET}")
     
     # Features
     active_features = [k for k, v in analysis['features'].items() if v]
     if active_features:
-        print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
-        print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}⚡ FEATURES DETECTED{Colors.RESET}{'':>29}{Colors.DIM}│{Colors.RESET}")
-        for feat in active_features[:3]:
-            print(f"   {Colors.DIM}│{Colors.RESET}  {Colors.YELLOW}▸{Colors.RESET} {feat.replace('_', ' ').title():<46}{Colors.DIM}│{Colors.RESET}")
+        print(f"   {Colors.NEON_CYAN}╠══════════════════════════════════════════════════════════╣{Colors.RESET}")
+        print(f"   {Colors.NEON_CYAN}║{Colors.RESET}  {Colors.NEON_YELLOW}⚡{Colors.RESET} {Colors.BOLD}FEATURES ACTIVATED{Colors.RESET}                                   {Colors.NEON_CYAN}║{Colors.RESET}")
+        for feat in active_features[:4]:
+            feat_name = feat.replace('_', ' ').title()
+            print(f"   {Colors.NEON_CYAN}║{Colors.RESET}    {Colors.NEON_GREEN}▸{Colors.RESET} {feat_name:<50}   {Colors.NEON_CYAN}║{Colors.RESET}")
     
     # Blocked sites
     if analysis['blocked_sites']:
-        print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
-        print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}🚫 SITES TO BLOCK{Colors.RESET}{'':>32}{Colors.DIM}│{Colors.RESET}")
-        sites = ', '.join(analysis['blocked_sites'])[:45]
-        print(f"   {Colors.DIM}│{Colors.RESET}  {sites:<48}{Colors.DIM}│{Colors.RESET}")
+        print(f"   {Colors.NEON_CYAN}╠══════════════════════════════════════════════════════════╣{Colors.RESET}")
+        print(f"   {Colors.NEON_CYAN}║{Colors.RESET}  {Colors.NEON_RED}🚫{Colors.RESET} {Colors.BOLD}SITES TO BLOCK{Colors.RESET}                                       {Colors.NEON_CYAN}║{Colors.RESET}")
+        for site in analysis['blocked_sites'][:3]:
+            print(f"   {Colors.NEON_CYAN}║{Colors.RESET}    {Colors.NEON_RED}✖{Colors.RESET} {site:<50}   {Colors.NEON_CYAN}║{Colors.RESET}")
     
-    print(f"   {Colors.DIM}└{'─' * 50}┘{Colors.RESET}")
+    print(f"   {Colors.NEON_CYAN}╚══════════════════════════════════════════════════════════╝{Colors.RESET}")
 
 
-def print_success_card(output_dir: Path):
-    """Print success message in a modern card."""
-    print(f"\n{Colors.GREEN}{'═' * 60}{Colors.RESET}")
-    print(f"""
-   {Colors.GREEN}{Colors.BOLD}✨ EXTENSION GENERATED SUCCESSFULLY! ✨{Colors.RESET}
-""")
-    print(f"{Colors.GREEN}{'═' * 60}{Colors.RESET}")
+def print_success_cyberpunk(output_dir: Path):
+    """Print epic cyberpunk success message with baby step instructions."""
     
     print(f"""
-   {Colors.BOLD}📁 Location:{Colors.RESET}
-   {Colors.CYAN}{output_dir}{Colors.RESET}
+   {Colors.NEON_GREEN}╔══════════════════════════════════════════════════════════════╗{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}                                                              {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}   {Colors.NEON_YELLOW}★ ═══════════════════════════════════════════════════ ★{Colors.RESET}   {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}   {Colors.NEON_YELLOW}║{Colors.RESET}                                                     {Colors.NEON_YELLOW}║{Colors.RESET}   {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}   {Colors.NEON_YELLOW}║{Colors.RESET}    {Colors.BOLD}{Colors.NEON_CYAN}✨ EXTENSION FORGED SUCCESSFULLY! ✨{Colors.RESET}        {Colors.NEON_YELLOW}║{Colors.RESET}   {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}   {Colors.NEON_YELLOW}║{Colors.RESET}                                                     {Colors.NEON_YELLOW}║{Colors.RESET}   {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}   {Colors.NEON_YELLOW}★ ═══════════════════════════════════════════════════ ★{Colors.RESET}   {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}║{Colors.RESET}                                                              {Colors.NEON_GREEN}║{Colors.RESET}
+   {Colors.NEON_GREEN}╚══════════════════════════════════════════════════════════════╝{Colors.RESET}
 
-   {Colors.BOLD}🔧 Load in Chrome:{Colors.RESET}
-   {Colors.DIM}┌────────────────────────────────────────────────┐{Colors.RESET}
-   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}1.{Colors.RESET} Open {Colors.CYAN}chrome://extensions{Colors.RESET}                  {Colors.DIM}│{Colors.RESET}
-   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}2.{Colors.RESET} Enable {Colors.YELLOW}'Developer mode'{Colors.RESET} (top right)      {Colors.DIM}│{Colors.RESET}
-   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}3.{Colors.RESET} Click {Colors.GREEN}'Load unpacked'{Colors.RESET}                    {Colors.DIM}│{Colors.RESET}
-   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}4.{Colors.RESET} Select the {Colors.MAGENTA}generated_extension{Colors.RESET} folder   {Colors.DIM}│{Colors.RESET}
-   {Colors.DIM}└────────────────────────────────────────────────┘{Colors.RESET}
+   {Colors.NEON_PURPLE}📁 YOUR EXTENSION IS READY AT:{Colors.RESET}
+   {Colors.NEON_CYAN}   {output_dir}{Colors.RESET}
 
-   {Colors.GREEN}Happy coding! 🎉{Colors.RESET}
+   {Colors.NEON_PINK}╔══════════════════════════════════════════════════════════════╗{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_YELLOW}🚀{Colors.RESET} {Colors.BOLD}{Colors.WHITE}LOAD YOUR EXTENSION IN CHROME - BABY STEPS{Colors.RESET}           {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}╠══════════════════════════════════════════════════════════════╣{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_CYAN}STEP 1:{Colors.RESET} {Colors.WHITE}Open Google Chrome browser{Colors.RESET}                       {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}(The browser with the colorful circle icon){Colors.RESET}        {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_CYAN}STEP 2:{Colors.RESET} {Colors.WHITE}Type this in the address bar:{Colors.RESET}                    {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.NEON_YELLOW}chrome://extensions{Colors.RESET}                               {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}(Where you normally type website URLs){Colors.RESET}              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_CYAN}STEP 3:{Colors.RESET} {Colors.WHITE}Turn ON "Developer mode"{Colors.RESET}                          {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}(Toggle switch in the TOP RIGHT corner){Colors.RESET}             {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.NEON_GREEN}[====●]{Colors.RESET} {Colors.GRAY}<-- Make it look like this{Colors.RESET}                 {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_CYAN}STEP 4:{Colors.RESET} {Colors.WHITE}Click the "Load unpacked" button{Colors.RESET}                  {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}(It appears after enabling Developer mode){Colors.RESET}          {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.NEON_PURPLE}┌─────────────────┐{Colors.RESET}                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.NEON_PURPLE}│  Load unpacked  │{Colors.RESET} {Colors.GRAY}<-- Click this{Colors.RESET}                 {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.NEON_PURPLE}└─────────────────┘{Colors.RESET}                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_CYAN}STEP 5:{Colors.RESET} {Colors.WHITE}Navigate to this folder:{Colors.RESET}                         {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.NEON_YELLOW}generated_extension{Colors.RESET}                               {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}(It's in the same folder as chrome_forge.py){Colors.RESET}         {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_CYAN}STEP 6:{Colors.RESET} {Colors.WHITE}Click "Select Folder" button{Colors.RESET}                      {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}(Bottom right of the folder picker window){Colors.RESET}           {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}  {Colors.NEON_GREEN}✓ DONE!{Colors.RESET} {Colors.WHITE}Your extension is now installed!{Colors.RESET}                 {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}Look for the puzzle piece icon 🧩 in Chrome{Colors.RESET}          {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}          {Colors.GRAY}Click it to see and use your extension!{Colors.RESET}              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}║{Colors.RESET}                                                              {Colors.NEON_PINK}║{Colors.RESET}
+   {Colors.NEON_PINK}╚══════════════════════════════════════════════════════════════╝{Colors.RESET}
+
+   {Colors.NEON_CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{Colors.RESET}
+   {Colors.NEON_PURPLE}🎮{Colors.RESET} {Colors.GRAY}Built with{Colors.RESET} {Colors.NEON_PINK}♥{Colors.RESET} {Colors.GRAY}by ChromeForge │ FAST University Tech Society{Colors.RESET}
+   {Colors.NEON_CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{Colors.RESET}
 """)
 
 
-def get_user_prompt() -> str:
-    """Get prompt from user with modern UI."""
-    print(f"   {Colors.BOLD}💡 What extension would you like to create?{Colors.RESET}")
-    print(f"   {Colors.DIM}Type your idea in plain English and press Enter{Colors.RESET}\n")
+def get_user_prompt_cyberpunk() -> str:
+    """Get prompt from user with cyberpunk UI."""
     
-    print(f"   {Colors.DIM}Examples:{Colors.RESET}")
-    print(f"   {Colors.DIM}  • Show popup with today's date{Colors.RESET}")
-    print(f"   {Colors.DIM}  • Highlight all phone numbers on any webpage{Colors.RESET}")
-    print(f"   {Colors.DIM}  • Block Facebook and TikTok{Colors.RESET}")
-    print()
+    print(f"""
+   {Colors.NEON_PURPLE}╔══════════════════════════════════════════════════════════════╗{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.NEON_YELLOW}💡{Colors.RESET} {Colors.BOLD}{Colors.WHITE}DESCRIBE YOUR EXTENSION{Colors.RESET}                                {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}                                                              {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.GRAY}Tell me what you want your Chrome extension to do.{Colors.RESET}        {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.GRAY}Just describe it in plain English - like talking to a{Colors.RESET}     {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.GRAY}friend! I'll handle all the coding.{Colors.RESET}                       {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}                                                              {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}╠══════════════════════════════════════════════════════════════╣{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.NEON_CYAN}💭 EXAMPLE IDEAS:{Colors.RESET}                                          {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}                                                              {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.NEON_GREEN}▸{Colors.RESET} {Colors.WHITE}"Show popup with today's date"{Colors.RESET}                      {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.NEON_GREEN}▸{Colors.RESET} {Colors.WHITE}"Highlight all phone numbers on any website"{Colors.RESET}         {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.NEON_GREEN}▸{Colors.RESET} {Colors.WHITE}"Block Facebook and TikTok"{Colors.RESET}                          {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}  {Colors.NEON_GREEN}▸{Colors.RESET} {Colors.WHITE}"Change all text to blue when I click a button"{Colors.RESET}      {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}║{Colors.RESET}                                                              {Colors.NEON_PURPLE}║{Colors.RESET}
+   {Colors.NEON_PURPLE}╚══════════════════════════════════════════════════════════════╝{Colors.RESET}
+""")
     
     try:
-        prompt = input(f"   {Colors.CYAN}▶{Colors.RESET} ").strip()
+        prompt = input(f"   {Colors.NEON_PINK}▶{Colors.RESET} {Colors.NEON_CYAN}Your idea:{Colors.RESET} ").strip()
     except (EOFError, KeyboardInterrupt):
         prompt = ""
     
@@ -1279,80 +1389,102 @@ def get_user_prompt() -> str:
 
 
 def main():
-    """Main entry point with modern UX."""
-    print_banner()
+    """Main entry point with cyberpunk UX."""
+    print_cyberpunk_banner()
     
     # Get prompt
     if len(sys.argv) > 1:
         prompt = ' '.join(sys.argv[1:]).strip()
-        print(f"   {Colors.DIM}Using prompt:{Colors.RESET} {prompt}\n")
+        print(f"\n   {Colors.NEON_PURPLE}▶{Colors.RESET} {Colors.GRAY}Using prompt:{Colors.RESET} {Colors.WHITE}{prompt}{Colors.RESET}\n")
     else:
-        prompt = get_user_prompt()
+        prompt = get_user_prompt_cyberpunk()
     
     if not prompt:
-        print(f"\n   {Colors.YELLOW}ℹ{Colors.RESET} No prompt provided. Using default extension.\n")
+        print(f"\n   {Colors.NEON_YELLOW}ℹ{Colors.RESET} {Colors.GRAY}No prompt provided. Creating default date extension.{Colors.RESET}\n")
         prompt = "Show a popup with today's date"
     
-    # Part A: Analyze prompt
-    print_step(1, "Analyzing your idea", "working")
-    animate_processing("Understanding intent...")
+    print_glowing_divider()
+    
+    # ═══════════════════════════════════════════════════════════════
+    # STEP 1: PART A - Analyze prompt
+    # ═══════════════════════════════════════════════════════════════
+    print_step_cyberpunk(1, 4, "ANALYZING YOUR IDEA")
+    animate_cyber_loader("Scanning keywords...", 0.5)
+    animate_cyber_loader("Detecting intent...", 0.4)
+    animate_cyber_loader("Mapping components...", 0.4)
+    
     analyzer = PromptAnalyzer(prompt)
     analysis = analyzer.analyze()
     
-    for i in range(1, 6):
-        print_progress_bar(i, 5)
-        time.sleep(0.1)
-    print()
+    print_neon_progress_bar(1, 1, "Analysis complete!")
+    print("\n")
     
-    print_analysis_card(analysis)
+    print_analysis_cyberpunk(analysis)
     
-    # Part B: Build manifest
-    print_step(2, "Building manifest.json", "working")
-    animate_processing("Creating Manifest V3 structure...")
+    # ═══════════════════════════════════════════════════════════════
+    # STEP 2: PART B - Build manifest
+    # ═══════════════════════════════════════════════════════════════
+    print_step_cyberpunk(2, 4, "BUILDING MANIFEST V3")
+    animate_cyber_loader("Creating manifest structure...", 0.5)
+    animate_cyber_loader("Adding permissions...", 0.3)
+    animate_cyber_loader("Validating JSON...", 0.3)
+    
     manifest_builder = ManifestBuilder(analysis)
     manifest = manifest_builder.build()
     is_valid, errors = manifest_builder.validate()
     
     if not is_valid:
-        print(f"   {Colors.RED}✗ Manifest validation failed: {errors}{Colors.RESET}")
+        print(f"\n   {Colors.NEON_RED}✗ Manifest validation failed:{Colors.RESET} {errors}")
         return 1
-    print(f"   {Colors.GREEN}✓{Colors.RESET} Manifest V3 validated")
     
-    # Part C: Generate code
-    print_step(3, "Generating extension code", "working")
+    print(f"\n   {Colors.NEON_GREEN}✓{Colors.RESET} {Colors.WHITE}Manifest V3 validated successfully{Colors.RESET}")
+    
+    # ═══════════════════════════════════════════════════════════════
+    # STEP 3: PART C - Generate code
+    # ═══════════════════════════════════════════════════════════════
+    print_step_cyberpunk(3, 4, "GENERATING EXTENSION CODE")
+    
     code_generator = CodeGenerator(analysis)
     code_files = code_generator.generate_all()
     
+    total_files = len(code_files)
     for i, filename in enumerate(code_files.keys(), 1):
-        animate_processing(f"Creating {filename}...")
-        print_progress_bar(i, len(code_files))
-        time.sleep(0.15)
-    print()
+        animate_cyber_loader(f"Forging {filename}...", 0.3)
+        print_neon_progress_bar(i, total_files, filename)
+        time.sleep(0.1)
     
-    print(f"   {Colors.GREEN}✓{Colors.RESET} Generated {len(code_files)} files")
+    print(f"\n\n   {Colors.NEON_GREEN}✓{Colors.RESET} {Colors.WHITE}Generated {total_files} files{Colors.RESET}")
     
-    # Part D: Write files
-    print_step(4, "Writing extension files", "working")
+    # ═══════════════════════════════════════════════════════════════
+    # STEP 4: PART D - Write files
+    # ═══════════════════════════════════════════════════════════════
+    print_step_cyberpunk(4, 4, "WRITING EXTENSION FILES")
+    
     output_dir = Path.cwd() / OUTPUT_DIR_NAME
     fs_manager = FileSystemManager(output_dir)
+    
+    animate_cyber_loader("Preparing output directory...", 0.3)
     
     if not fs_manager.prepare_directory():
         return 1
     
+    animate_cyber_loader("Writing files to disk...", 0.4)
+    
     if not fs_manager.write_all_files(manifest, code_files):
         return 1
     
-    animate_processing("Finalizing extension...")
+    animate_cyber_loader("Validating extension structure...", 0.3)
     
     # Validate final output
     is_valid, errors = fs_manager.validate_extension()
     if is_valid:
-        print(f"   {Colors.GREEN}✓{Colors.RESET} Extension validated and ready!")
+        print(f"\n   {Colors.NEON_GREEN}✓{Colors.RESET} {Colors.WHITE}Extension validated and ready!{Colors.RESET}")
     else:
-        print(f"   {Colors.YELLOW}⚠{Colors.RESET} Warnings: {errors}")
+        print(f"\n   {Colors.NEON_YELLOW}⚠{Colors.RESET} {Colors.GRAY}Warnings: {errors}{Colors.RESET}")
     
     # Success!
-    print_success_card(output_dir)
+    print_glowing_divider()
+    print_success_cyberpunk(output_dir)
     
     return 0
 
