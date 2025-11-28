@@ -1,9 +1,29 @@
 {
   "manifest_version": 3,
-  "name": "Sample: Popup Date",
-  "version": "1.0",
-  "description": "Sample extension showing today's date (generated).",
-  "action": {
-    "default_popup": "popup.html"
+  "name": "Block Facebook Twitter and Instagram",
+  "version": "1.0.0",
+  "description": "Auto-generated extension: Block Facebook, Twitter, and Instagram.",
+  "action": {},
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "*://*.facebook.com/*",
+    "<all_urls>",
+    "*://*.twitter.com/*",
+    "*://*.instagram.com/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
   }
 }
