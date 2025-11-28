@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Sample: Popup Date",
+  "version": "1.0",
+  "description": "Sample extension showing today's date (generated).",
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
