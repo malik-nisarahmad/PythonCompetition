@@ -1093,88 +1093,246 @@ class FileSystemManager:
 
 
 # ============================================================================
-# MAIN ORCHESTRATOR
+# MAIN ORCHESTRATOR - MODERN SLEEK UI
 # ============================================================================
 
+import time
+
+# ANSI color codes for terminal
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    RESET = '\033[0m'
+    WHITE = '\033[97m'
+    MAGENTA = '\033[35m'
+
+
+def clear_screen():
+    """Clear terminal screen."""
+    os.system('clear' if os.name != 'nt' else 'cls')
+
+
+def print_slow(text, delay=0.02):
+    """Print text with typewriter effect."""
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(delay)
+    print()
+
+
 def print_banner():
-    """Print application banner."""
-    print("\n" + "=" * 60)
-    print("  ChromeForge - AI-Powered Chrome Extension Generator")
-    print("  FAST University Tech Society | Version " + VERSION)
-    print("=" * 60 + "\n")
+    """Print modern animated banner."""
+    clear_screen()
+    
+    logo = f"""
+{Colors.CYAN}{Colors.BOLD}
+    ██████╗██╗  ██╗██████╗  ██████╗ ███╗   ███╗███████╗
+   ██╔════╝██║  ██║██╔══██╗██╔═══██╗████╗ ████║██╔════╝
+   ██║     ███████║██████╔╝██║   ██║██╔████╔██║█████╗  
+   ██║     ██╔══██║██╔══██╗██║   ██║██║╚██╔╝██║██╔══╝  
+   ╚██████╗██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗
+    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
+{Colors.YELLOW}   ███████╗ ██████╗ ██████╗  ██████╗ ███████╗        
+   ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝        
+   █████╗  ██║   ██║██████╔╝██║  ███╗█████╗          
+   ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝          
+   ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗        
+   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝        
+{Colors.RESET}"""
+    
+    print(logo)
+    print(f"{Colors.DIM}{'─' * 60}{Colors.RESET}")
+    print(f"{Colors.WHITE}   🚀 AI-Powered Chrome Extension Generator{Colors.RESET}")
+    print(f"{Colors.DIM}   Version {VERSION} │ FAST University Tech Society{Colors.RESET}")
+    print(f"{Colors.DIM}{'─' * 60}{Colors.RESET}\n")
 
 
-def print_analysis(analysis: Dict[str, Any]):
-    """Print analysis results."""
-    print("\n[PROMPT ANALYSIS]")
-    print("-" * 40)
+def print_step(step_num, title, status="working"):
+    """Print a step with status indicator."""
+    icons = {
+        "working": f"{Colors.YELLOW}⟳{Colors.RESET}",
+        "done": f"{Colors.GREEN}✓{Colors.RESET}",
+        "error": f"{Colors.RED}✗{Colors.RESET}",
+        "info": f"{Colors.CYAN}ℹ{Colors.RESET}"
+    }
+    icon = icons.get(status, icons["working"])
+    print(f"\n{icon} {Colors.BOLD}STEP {step_num}{Colors.RESET} │ {Colors.WHITE}{title}{Colors.RESET}")
+
+
+def print_progress_bar(progress, total, width=40):
+    """Print an animated progress bar."""
+    filled = int(width * progress / total)
+    bar = f"{Colors.GREEN}{'█' * filled}{Colors.DIM}{'░' * (width - filled)}{Colors.RESET}"
+    percent = int(100 * progress / total)
+    print(f"\r   [{bar}] {percent}%", end='', flush=True)
+
+
+def animate_processing(message, duration=0.5):
+    """Show processing animation."""
+    frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+    end_time = time.time() + duration
+    i = 0
+    while time.time() < end_time:
+        print(f"\r   {Colors.CYAN}{frames[i % len(frames)]}{Colors.RESET} {message}", end='', flush=True)
+        time.sleep(0.08)
+        i += 1
+    print(f"\r   {Colors.GREEN}✓{Colors.RESET} {message}           ")
+
+
+def print_analysis_card(analysis: Dict[str, Any]):
+    """Print analysis results in a modern card format."""
+    print(f"\n   {Colors.DIM}┌{'─' * 50}┐{Colors.RESET}")
+    print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}📊 ANALYSIS RESULTS{Colors.RESET}{'':>30}{Colors.DIM}│{Colors.RESET}")
+    print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
     
-    print(f"  Valid: {'Yes' if analysis['valid'] else 'No'} - {analysis['validation_message']}")
+    # Validation status
+    status_icon = f"{Colors.GREEN}✓{Colors.RESET}" if analysis['valid'] else f"{Colors.RED}✗{Colors.RESET}"
+    print(f"   {Colors.DIM}│{Colors.RESET}  Status: {status_icon} {analysis['validation_message'][:35]:<35}{Colors.DIM}│{Colors.RESET}")
     
+    # Intent detection
     if analysis['intents']:
-        print(f"  Intents: {', '.join([f'{k}({v:.0%})' for k, v in analysis['intents'].items() if v > 0.3])}")
+        top_intent = max(analysis['intents'].items(), key=lambda x: x[1])
+        print(f"   {Colors.DIM}│{Colors.RESET}  Intent: {Colors.CYAN}{top_intent[0]}{Colors.RESET} ({top_intent[1]:.0%} confidence){'':>13}{Colors.DIM}│{Colors.RESET}")
     
-    print(f"\n  Components needed:")
+    print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
+    print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}🧩 COMPONENTS{Colors.RESET}{'':>36}{Colors.DIM}│{Colors.RESET}")
+    
+    # Components grid
+    comp_line = "   "
     for comp, needed in analysis['components'].items():
-        print(f"    [{'X' if needed else ' '}] {comp}")
+        icon = f"{Colors.GREEN}●{Colors.RESET}" if needed else f"{Colors.DIM}○{Colors.RESET}"
+        comp_line += f" {icon} {comp:<12}"
+    print(f"   {Colors.DIM}│{Colors.RESET}{comp_line[:48]:<48}{Colors.DIM}│{Colors.RESET}")
     
+    # Permissions
     if analysis['permissions']:
-        print(f"\n  Permissions: {', '.join(sorted(analysis['permissions']))}")
+        print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
+        print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}🔐 PERMISSIONS{Colors.RESET}{'':>35}{Colors.DIM}│{Colors.RESET}")
+        perms = ', '.join(sorted(analysis['permissions']))[:45]
+        print(f"   {Colors.DIM}│{Colors.RESET}  {perms:<48}{Colors.DIM}│{Colors.RESET}")
     
-    if analysis['features']:
-        active_features = [k for k, v in analysis['features'].items() if v]
-        if active_features:
-            print(f"  Features: {', '.join(active_features)}")
+    # Features
+    active_features = [k for k, v in analysis['features'].items() if v]
+    if active_features:
+        print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
+        print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}⚡ FEATURES DETECTED{Colors.RESET}{'':>29}{Colors.DIM}│{Colors.RESET}")
+        for feat in active_features[:3]:
+            print(f"   {Colors.DIM}│{Colors.RESET}  {Colors.YELLOW}▸{Colors.RESET} {feat.replace('_', ' ').title():<46}{Colors.DIM}│{Colors.RESET}")
     
+    # Blocked sites
     if analysis['blocked_sites']:
-        print(f"  Blocked sites: {', '.join(analysis['blocked_sites'])}")
+        print(f"   {Colors.DIM}├{'─' * 50}┤{Colors.RESET}")
+        print(f"   {Colors.DIM}│{Colors.RESET} {Colors.BOLD}🚫 SITES TO BLOCK{Colors.RESET}{'':>32}{Colors.DIM}│{Colors.RESET}")
+        sites = ', '.join(analysis['blocked_sites'])[:45]
+        print(f"   {Colors.DIM}│{Colors.RESET}  {sites:<48}{Colors.DIM}│{Colors.RESET}")
+    
+    print(f"   {Colors.DIM}└{'─' * 50}┘{Colors.RESET}")
+
+
+def print_success_card(output_dir: Path):
+    """Print success message in a modern card."""
+    print(f"\n{Colors.GREEN}{'═' * 60}{Colors.RESET}")
+    print(f"""
+   {Colors.GREEN}{Colors.BOLD}✨ EXTENSION GENERATED SUCCESSFULLY! ✨{Colors.RESET}
+""")
+    print(f"{Colors.GREEN}{'═' * 60}{Colors.RESET}")
+    
+    print(f"""
+   {Colors.BOLD}📁 Location:{Colors.RESET}
+   {Colors.CYAN}{output_dir}{Colors.RESET}
+
+   {Colors.BOLD}🔧 Load in Chrome:{Colors.RESET}
+   {Colors.DIM}┌────────────────────────────────────────────────┐{Colors.RESET}
+   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}1.{Colors.RESET} Open {Colors.CYAN}chrome://extensions{Colors.RESET}                  {Colors.DIM}│{Colors.RESET}
+   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}2.{Colors.RESET} Enable {Colors.YELLOW}'Developer mode'{Colors.RESET} (top right)      {Colors.DIM}│{Colors.RESET}
+   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}3.{Colors.RESET} Click {Colors.GREEN}'Load unpacked'{Colors.RESET}                    {Colors.DIM}│{Colors.RESET}
+   {Colors.DIM}│{Colors.RESET} {Colors.WHITE}4.{Colors.RESET} Select the {Colors.MAGENTA}generated_extension{Colors.RESET} folder   {Colors.DIM}│{Colors.RESET}
+   {Colors.DIM}└────────────────────────────────────────────────┘{Colors.RESET}
+
+   {Colors.GREEN}Happy coding! 🎉{Colors.RESET}
+""")
+
+
+def get_user_prompt() -> str:
+    """Get prompt from user with modern UI."""
+    print(f"   {Colors.BOLD}💡 What extension would you like to create?{Colors.RESET}")
+    print(f"   {Colors.DIM}Type your idea in plain English and press Enter{Colors.RESET}\n")
+    
+    print(f"   {Colors.DIM}Examples:{Colors.RESET}")
+    print(f"   {Colors.DIM}  • Show popup with today's date{Colors.RESET}")
+    print(f"   {Colors.DIM}  • Highlight all phone numbers on any webpage{Colors.RESET}")
+    print(f"   {Colors.DIM}  • Block Facebook and TikTok{Colors.RESET}")
+    print()
+    
+    try:
+        prompt = input(f"   {Colors.CYAN}▶{Colors.RESET} ").strip()
+    except (EOFError, KeyboardInterrupt):
+        prompt = ""
+    
+    return prompt
 
 
 def main():
-    """Main entry point."""
+    """Main entry point with modern UX."""
     print_banner()
     
     # Get prompt
     if len(sys.argv) > 1:
         prompt = ' '.join(sys.argv[1:]).strip()
-        print(f"Prompt: {prompt}\n")
+        print(f"   {Colors.DIM}Using prompt:{Colors.RESET} {prompt}\n")
     else:
-        print("Describe the Chrome Extension you want to generate:")
-        print("(Examples: 'Show popup with today's date', 'Highlight phone numbers on any website')\n")
-        try:
-            prompt = input("> ").strip()
-        except (EOFError, KeyboardInterrupt):
-            prompt = ""
+        prompt = get_user_prompt()
     
     if not prompt:
-        print("\nNo prompt provided. Using default: 'Show a popup with today's date'")
+        print(f"\n   {Colors.YELLOW}ℹ{Colors.RESET} No prompt provided. Using default extension.\n")
         prompt = "Show a popup with today's date"
     
     # Part A: Analyze prompt
-    print("\n[PART A] Analyzing prompt...")
+    print_step(1, "Analyzing your idea", "working")
+    animate_processing("Understanding intent...")
     analyzer = PromptAnalyzer(prompt)
     analysis = analyzer.analyze()
-    print_analysis(analysis)
+    
+    for i in range(1, 6):
+        print_progress_bar(i, 5)
+        time.sleep(0.1)
+    print()
+    
+    print_analysis_card(analysis)
     
     # Part B: Build manifest
-    print("\n[PART B] Building manifest...")
+    print_step(2, "Building manifest.json", "working")
+    animate_processing("Creating Manifest V3 structure...")
     manifest_builder = ManifestBuilder(analysis)
     manifest = manifest_builder.build()
     is_valid, errors = manifest_builder.validate()
     
     if not is_valid:
-        print(f"  X Manifest validation failed: {errors}")
+        print(f"   {Colors.RED}✗ Manifest validation failed: {errors}{Colors.RESET}")
         return 1
-    print("  OK - Manifest V3 structure validated")
+    print(f"   {Colors.GREEN}✓{Colors.RESET} Manifest V3 validated")
     
     # Part C: Generate code
-    print("\n[PART C] Generating code files...")
+    print_step(3, "Generating extension code", "working")
     code_generator = CodeGenerator(analysis)
     code_files = code_generator.generate_all()
-    print(f"  OK - Generated {len(code_files)} files: {', '.join(code_files.keys())}")
+    
+    for i, filename in enumerate(code_files.keys(), 1):
+        animate_processing(f"Creating {filename}...")
+        print_progress_bar(i, len(code_files))
+        time.sleep(0.15)
+    print()
+    
+    print(f"   {Colors.GREEN}✓{Colors.RESET} Generated {len(code_files)} files")
     
     # Part D: Write files
-    print("\n[PART D] Writing extension files...")
+    print_step(4, "Writing extension files", "working")
     output_dir = Path.cwd() / OUTPUT_DIR_NAME
     fs_manager = FileSystemManager(output_dir)
     
@@ -1184,26 +1342,17 @@ def main():
     if not fs_manager.write_all_files(manifest, code_files):
         return 1
     
-    print(f"  OK - {fs_manager.get_summary()}")
+    animate_processing("Finalizing extension...")
     
     # Validate final output
     is_valid, errors = fs_manager.validate_extension()
-    if not is_valid:
-        print(f"\n  Warning: {errors}")
+    if is_valid:
+        print(f"   {Colors.GREEN}✓{Colors.RESET} Extension validated and ready!")
     else:
-        print("  OK - Extension structure validated")
+        print(f"   {Colors.YELLOW}⚠{Colors.RESET} Warnings: {errors}")
     
-    # Success summary
-    print("\n" + "=" * 60)
-    print("  EXTENSION GENERATED SUCCESSFULLY!")
-    print("=" * 60)
-    print(f"\n  Location: {output_dir}")
-    print("\n  To load in Chrome:")
-    print("    1. Open chrome://extensions")
-    print("    2. Enable 'Developer mode'")
-    print("    3. Click 'Load unpacked'")
-    print(f"    4. Select the '{OUTPUT_DIR_NAME}' folder")
-    print()
+    # Success!
+    print_success_card(output_dir)
     
     return 0
 
