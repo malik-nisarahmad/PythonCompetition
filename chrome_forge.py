@@ -832,110 +832,297 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         return base_code
     
     def generate_styles_css(self) -> str:
-        """Generate styles.css file."""
-        color = self.analysis["color_scheme"] or "#4285f4"
+        """Generate CYBERPUNK styles.css file."""
+        color = self.analysis["color_scheme"] or "#00ffff"
         
-        css = f'''/* ChromeForge Generated Styles */
+        css = f'''/* ChromeForge CYBERPUNK Edition */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+/* CSS Variables for Cyberpunk Theme */
+:root {{
+  --neon-cyan: #00ffff;
+  --neon-pink: #ff00ff;
+  --neon-purple: #bf00ff;
+  --neon-blue: #00bfff;
+  --neon-green: #00ff00;
+  --dark-bg: #0a0a0f;
+  --darker-bg: #050508;
+  --glass-bg: rgba(10, 10, 20, 0.85);
+  --border-glow: rgba(0, 255, 255, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+}}
 
 /* Popup Styles */
-body {{
+* {{
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  box-sizing: border-box;
+}}
+
+body {{
+  font-family: 'Rajdhani', 'Segoe UI', sans-serif;
   font-size: 14px;
-  color: #333;
-  background: #fff;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #0d0d1a 50%, #1a0a1a 100%);
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+}}
+
+/* Animated background grid */
+body::before {{
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 0;
+}}
+
+/* Glowing orb effect */
+body::after {{
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(255, 0, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: pulse 8s ease-in-out infinite;
+}}
+
+@keyframes pulse {{
+  0%, 100% {{ opacity: 0.5; transform: scale(1); }}
+  50% {{ opacity: 0.8; transform: scale(1.1); }}
 }}
 
 .popup-container {{
-  min-width: 280px;
-  max-width: 350px;
-  padding: 16px;
+  position: relative;
+  z-index: 1;
+  min-width: 320px;
+  max-width: 380px;
+  padding: 24px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.15),
+    0 0 60px rgba(255, 0, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}}
+
+/* Corner accents */
+.popup-container::before,
+.popup-container::after {{
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--neon-cyan);
+}}
+
+.popup-container::before {{
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 16px 0 0 0;
+}}
+
+.popup-container::after {{
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 16px 0;
 }}
 
 .popup-title {{
-  margin: 0 0 12px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #202124;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  text-align: center;
+  background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-pink) 50%, var(--neon-cyan) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+  text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}}
+
+@keyframes shimmer {{
+  0% {{ background-position: 0% center; }}
+  100% {{ background-position: 200% center; }}
 }}
 
 .output-area {{
-  min-height: 40px;
-  padding: 12px;
-  margin-bottom: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.5;
+  min-height: 60px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0%, rgba(255, 0, 255, 0.05) 100%);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  font-family: 'Rajdhani', monospace;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--neon-cyan);
+  position: relative;
+  overflow: hidden;
+}}
+
+.output-area::before {{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  animation: scan 3s linear infinite;
+}}
+
+@keyframes scan {{
+  0% {{ left: -100%; }}
+  100% {{ left: 100%; }}
 }}
 
 .btn-primary {{
   width: 100%;
-  padding: 10px 16px;
+  padding: 14px 24px;
   border: none;
-  border-radius: 6px;
-  background: {color};
-  color: white;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  color: var(--dark-bg);
+  font-family: 'Orbitron', sans-serif;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.4),
+    0 0 40px rgba(0, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}}
+
+.btn-primary::before {{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
 }}
 
 .btn-primary:hover {{
-  background: #3367d6;
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.6),
+    0 0 60px rgba(255, 0, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}}
+
+.btn-primary:hover::before {{
+  left: 100%;
 }}
 
 .btn-primary:active {{
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
 }}
 
 .status-message {{
-  margin-top: 10px;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid transparent;
 }}
 
 .status-message.success {{
-  background: #e6f4ea;
-  color: #137333;
+  background: rgba(0, 255, 0, 0.1);
+  border-color: rgba(0, 255, 0, 0.3);
+  color: var(--neon-green);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
 }}
 
 .status-message.error {{
-  background: #fce8e6;
-  color: #c5221f;
+  background: rgba(255, 0, 100, 0.1);
+  border-color: rgba(255, 0, 100, 0.3);
+  color: #ff0064;
+  box-shadow: 0 0 20px rgba(255, 0, 100, 0.2);
 }}
 
 .date-display {{
-  font-size: 16px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
   font-weight: 500;
   text-align: center;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }}
 
-/* Content Script Styles */
+/* Content Script Styles - CYBERPUNK */
 .cf-highlight {{
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  position: relative;
+  animation: neon-pulse 2s ease-in-out infinite;
+}}
+
+@keyframes neon-pulse {{
+  0%, 100% {{ opacity: 1; }}
+  50% {{ opacity: 0.8; }}
 }}
 
 .cf-phone {{
-  background: #fff3cd;
-  border: 1px solid #ffc107;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 191, 255, 0.2));
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  color: #00ffff !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
 }}
 
 .cf-email {{
-  background: #d4edda;
-  border: 1px solid #28a745;
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(191, 0, 255, 0.2));
+  border: 1px solid rgba(255, 0, 255, 0.5);
+  color: #ff00ff !important;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3), inset 0 0 10px rgba(255, 0, 255, 0.1);
+  text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
 }}
 
 .cf-link {{
-  background: #cce5ff;
-  border: 1px solid #007bff;
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 191, 0, 0.2));
+  border: 1px solid rgba(0, 255, 0, 0.5);
+  color: #00ff00 !important;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1);
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
 }}
 '''
         return css
